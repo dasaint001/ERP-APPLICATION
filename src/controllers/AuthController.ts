@@ -44,7 +44,7 @@ export class AuthController {
                 return ResponseService.error(res, 'Unauthorized to register users with this role.', null, 403);
             }
 
-            const userRole = role || UserRole.MEMBER; // Default to MEMBER
+            const userRole = role || UserRole.MEMBER;
 
             const user = await AuthService.register({ email, password, firstName, lastName, role: userRole });
 

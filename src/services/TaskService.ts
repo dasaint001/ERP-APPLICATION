@@ -61,8 +61,7 @@ export class TaskService {
                     throw new Error(`Invalid status transition from ${oldStatus} to ${newStatus} for a MEMBER.`);
                 }
             }
-            // ADMIN/MANAGER can transition freely (or define specific rules for them)
-            // For 'Completed' status, specific conditions apply
+
             if (newStatus === TaskStatus.COMPLETED) {
                 if (requestingUser.role === UserRole.MEMBER && task.assignedToId !== requestingUser.id) {
                      throw new Error('Only Admin or the assigned member can mark task as Completed.');
@@ -96,7 +95,7 @@ export class TaskService {
         }
 
         task.assignedTo = assignedToUser;
-        task.assignedToId = assignedToUser.id; // Update the foreign key column
+        task.assignedToId = assignedToUser.id;
         await TaskRepository.save(task);
         await LoggerService.logAction(requestingUser.id, 'TASK_ASSIGNED', { taskId: task.id, assignedTo: assignedToUser.email });
         return task;
